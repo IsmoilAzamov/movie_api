@@ -1,25 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:movie_api/core/app_exception.dart';
 import 'package:movie_api/core/base_service.dart';
 import 'package:http/http.dart' as http;
 
-class PopularService extends BaseService{
+class DetailsService extends BaseService{
   dynamic responseJson;
 
   @override
-  Future getResponse(String url, String pageNumber) async{
+  Future getResponse(String url,String pageNumber ) async{
     try{
-      final response=await http.get(Uri.parse(baseUrl+url+apiKey+pageNumber));
-     responseJson= returnResponse(response);
+      final response=await http.get(Uri.parse(baseUrl+url+apiKey));
+
+      responseJson= returnResponse(response);
 
     } on SocketException{
       throw Exception("Internet error");
     }
     return responseJson;
   }
- dynamic returnResponse(http.Response response){
+  dynamic returnResponse(http.Response response){
     switch (response.statusCode){
       case 200:
         dynamic responseJson=jsonDecode(response.body);
@@ -32,6 +32,6 @@ class PopularService extends BaseService{
         throw NotFoundException(response.statusCode.toString());
       default: Exception(response.statusCode.toString());
     }
-}
+  }
 
 }
